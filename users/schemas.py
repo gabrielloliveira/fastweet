@@ -8,3 +8,12 @@ class UserSchema(BaseModel):
     name: Optional[str] = None
     username: str
     password: str
+
+
+class UserDisplaySchema(BaseModel):
+    uuid: Optional[str] = None
+    name: Optional[str] = None
+    username: str
+
+    class Config:
+        orm_mode = True

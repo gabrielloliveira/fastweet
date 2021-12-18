@@ -2,7 +2,7 @@ from fastapi import APIRouter, status, Response
 from sqlalchemy.exc import IntegrityError
 
 from users.managers import UserManager
-from users.schemas import UserSchema
+from users.schemas import UserSchema, UserDisplaySchema
 
 router = APIRouter(
     prefix="/api/users",
@@ -10,7 +10,7 @@ router = APIRouter(
 )
 
 
-@router.post("/")
+@router.post("/", response_model=UserDisplaySchema)
 def create_user(user: UserSchema, response: Response):
     try:
         user = UserManager.create_user(data=user)
@@ -18,4 +18,4 @@ def create_user(user: UserSchema, response: Response):
         return user
     except IntegrityError:
         response.status_code = status.HTTP_400_BAD_REQUEST
-        return {"message": "User already exists."}
+        return {"message": "Username already exists."}
