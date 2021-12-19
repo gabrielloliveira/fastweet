@@ -1,13 +1,25 @@
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel
 
-from users.schemas import UserSchema
+from users.schemas import UserDisplaySchema
 
 
 class TweetSchema(BaseModel):
-    uuid: str
-    created_at: datetime
-    updated_at: datetime
+    uuid: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
     text: str
-    user: UserSchema
+    user_id: int
+
+
+class TweetSchemaDisplay(BaseModel):
+    uuid: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    text: str
+    user: UserDisplaySchema
+
+    class Config:
+        orm_mode = True

@@ -15,4 +15,4 @@ class TweetModel(BaseDB):
     updated_at = Column(DateTime)
     text = Column(String(280))
     user_id = Column(Integer, ForeignKey("user.id"))
-    user = relationship(UserModel, back_populates="tweets")
+    user = relationship(UserModel, backref="tweets", lazy="subquery")
