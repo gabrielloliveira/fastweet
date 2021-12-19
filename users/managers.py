@@ -46,3 +46,18 @@ class UserManager:
     @staticmethod
     def get(**kwargs) -> UserModel:
         return UserManager.filter(**kwargs).first()
+
+    @staticmethod
+    def update(user: UserModel, **kwargs) -> UserModel:
+        for key, value in kwargs.items():
+            if key == "password":
+                value = encrypt_password(value)
+            setattr(user, key, value)
+        return UserManager._save(user)
+
+    @staticmethod
+    def delete(user: UserModel) -> bool:
+        db = UserManager._db()
+        db.delete(user)
+        db.commit()
+        return True
