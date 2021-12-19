@@ -35,3 +35,14 @@ class UserManager:
         data.uuid = UserManager.get_unique_uuid()
         user = UserManager._model(data)
         return UserManager._save(user)
+
+    @staticmethod
+    def filter(**kwargs) -> UserModel:
+        qs = UserManager._db().query(UserModel)
+        for key, value in kwargs.items():
+            qs = qs.filter(getattr(UserModel, key) == value)
+        return qs.order_by(UserModel.id.desc())
+
+    @staticmethod
+    def get(**kwargs) -> UserModel:
+        return UserManager.filter(**kwargs).first()
