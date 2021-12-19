@@ -10,12 +10,12 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=UserDisplaySchema)
+@router.post("/")
 def create_user(user: UserSchema, response: Response):
     try:
-        user = UserManager.create_user(data=user)
+        user = UserManager().create(data=user)
         response.status_code = status.HTTP_201_CREATED
-        return user
+        return UserDisplaySchema(**user.__dict__)
     except IntegrityError:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {"message": "Username already exists."}
